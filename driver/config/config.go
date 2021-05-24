@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"path/filepath"
 	"runtime"
 	"strings"
 	"testing"
@@ -701,8 +702,16 @@ func (p *Config) CourierSMTPFromName() string {
 	return p.p.StringF(ViperKeyCourierSMTPFromName, "")
 }
 
-func (p *Config) CourierTemplatesRoot() string {
-	return p.p.StringF(ViperKeyCourierTemplatesPath, "courier/builtin/templates")
+func (p *Config) CourierTemplatePath(subpath ...string) string {
+	var fullpath []string
+	if p.p.Koanf.Exists(ViperKeyCourierTemplatesPath) {
+		fullpath = []string{p.p.String(ViperKeyCourierTemplatesPath)}
+	} else {
+		fullpath = []string{"courier", "builtin", "templates"}
+	}
+	fullpath = append(fullpath, subpath...)
+
+	return filepath.Join(fullpath...)
 }
 
 func splitUrlAndFragment(s string) (string, string) {
