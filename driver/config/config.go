@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"path/filepath"
+	"path"
 	"runtime"
 	"strings"
 	"testing"
@@ -711,7 +711,7 @@ func (p *Config) CourierTemplatePath(subpath ...string) string {
 	}
 	fullpath = append(fullpath, subpath...)
 
-	return filepath.Join(fullpath...)
+	return path.Join(fullpath...)
 }
 
 func splitUrlAndFragment(s string) (string, string) {
